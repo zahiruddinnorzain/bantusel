@@ -3,6 +3,106 @@
 
 	home
 	<br>
+	<!-- # nama
+	# tarikh_lahir
+	# jantina
+	# mastautin
+	# tempat_lahir
+	# gaji
+	# pendapatan_isi_rumah
+	# status_kahwin
+
+	# nama_pasangan
+	# tarikh_lahir_pasangan
+	# jantina_pasangan
+	# gaji_pasangan
+
+	# bilangan_anak -->
+
+	<form action="{{ url_for('api_check') }}" method=POST>
+
+		<div class="form-group">
+			<label for="nama">Nama:</label>
+			<input type="text" name="nama" class="form-control" placeholder="" id="nama">
+		</div>
+
+		<div class="form-group">
+			<label for="tarikh_lahir">Tarikh Lahir:</label>
+			<input type="date" name="tarikh_lahir" class="form-control" placeholder="" id="tarikh_lahir">
+		</div>
+
+		<div class="form-group">
+			<label for="jantina">Jantina:</label>
+			<select class="form-control" id="jantina" name="jantina">
+				<option value="Lelaki">Lelaki</option>
+				<option value="Perempuan">Perempuan</option>
+			</select>
+		</div>
+
+		<div class="form-group">
+			<label for="mastautin">Tahun bermastautin:</label>
+			<input type="text" name="mastautin" class="form-control" placeholder="" id="mastautin">
+		</div>
+
+		<div class="form-group">
+			<label for="tempat_lahir">Tempat Lahir:</label>
+			<input type="text" name="tempat_lahir" class="form-control" placeholder="" id="tempat_lahir" value="Selangor">
+		</div>
+
+		<div class="form-group">
+			<label for="gaji">Gaji:</label>
+			<input type="number" name="gaji" class="form-control" step="0.01" min="0" placeholder="" id="gaji">
+		</div>
+
+		<div class="form-group">
+			<label for="pendapatan_isi_rumah">Pendapatan Isi Rumah:</label>
+			<input type="text" name="pendapatan_isi_rumah" class="form-control" placeholder="" id="pendapatan_isi_rumah">
+		</div>
+
+		<div class="form-group">
+			<label for="status_kahwin">Status Kahwin:</label>
+			<input type="text" name="status_kahwin" class="form-control" placeholder="" id="status_kahwin">
+		</div>
+
+		<div class="form-group">
+			<label for="masih_belajar">Masih Belajar:</label>
+			<select class="form-control" id="masih_belajar" name="masih_belajar">
+				<option value="Ya">Ya</option>
+				<option value="Tidak">Tidak</option>
+			</select>
+		</div>
+
+		<div class="form-group">
+			<label for="nama_pasangan">Nama Pasangan:</label>
+			<input type="text" name="nama_pasangan" class="form-control" placeholder="" id="nama_pasangan">
+		</div>
+
+		<div class="form-group">
+			<label for="tarikh_lahir_pasangan">Tarikh Lahir Pasangan:</label>
+			<input type="date" name="tarikh_lahir_pasangan" class="form-control" placeholder="" id="tarikh_lahir_pasangan">
+		</div>
+
+		<div class="form-group">
+			<label for="jantina_pasangan">Jantina Pasangan:</label>
+			<select class="form-control" id="jantina_pasangan" name="jantina_pasangan">
+				<option value="Lelaki">Lelaki</option>
+				<option value="Perempuan">Perempuan</option>
+			</select>
+		</div>
+
+		<div class="form-group">
+			<label for="gaji_pasangan">Gaji Pasangan:</label>
+			<input type="number" name="gaji_pasangan" class="form-control" step="0.01" min="0" placeholder="RM" id="gaji_pasangan">
+		</div> 
+
+		<div class="form-group">
+			<label for="bilangan_anak">Bilangan Anak:</label>
+			<input type="number" min="0" name="bilangan_anak" class="form-control" placeholder="" id="bilangan_anak">
+		</div>
+
+		<button type="submit" class="btn btn-primary my-2">Submit</button>
+	</form>
+	
 	
 
 {% endblock content %}
