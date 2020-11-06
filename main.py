@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify, make_response, render_template, redirect, url_for, session
 from flask_sqlalchemy import SQLAlchemy
+import json
 
 '''
 pip3 install flask-sqlalchemy
@@ -44,6 +45,7 @@ class IprCheck(db.Model):
 @app.route('/api/seeder/<input>', methods=['GET'])
 def seeder(input):
 	if input == 'ipr':
+		# kiss
 		kiss = IprCheck(
 			kod_ipr = 'kiss', 
 			nama_ipr = "Kasih Ibu Smart Selangor",
@@ -64,13 +66,35 @@ def seeder(input):
 			masih_belajar = 'Ya',
 			ipr_status = 'active',
 			)
+		# sade
+		sade = IprCheck(
+			kod_ipr = 'sade', 
+			nama_ipr = "Skim Air Darul Ehsan",
+			# max_umur_pemohon = '21',
+			# min_umur_pemohon = '18',
+			# jantina_pemohon = 'Perempuan',
+			# status_pemohon = 'namasini',
+			negeri_kelahiran_pemohon = 'Selangor',
+			# mastautin_pemohon = '10',
+			# max_pendapatan_pemohon = '2000',
+			# min_pendapatan_pemohon = '0',
+			# jantina_pasangan = 'Lelaki',
+			# max_umur_pasangan = '21',
+			# min_umur_pasangan = '18',
+			# max_gaji_pasangan = '2000',
+			# min_gaji_pasangan = '0',
+			# # bilangan_anak = 'namasini',
+			# masih_belajar = 'Ya',
+			ipr_status = 'active',
+			)
 		db.session.add(kiss)
+		db.session.add(sade)
 		db.session.commit()
 		return jsonify({'message' : 'Done seed IPR!'})
 	return jsonify({'message' : 'Input is missing!'})
 
 
-@app.route('/api/check', methods=['POST'])
+@app.route('/result', methods=['POST'])
 def api_check():
 
 	# dalam db akan ada max gaji & min gaji
@@ -110,17 +134,72 @@ def api_check():
 	
 	# cek kelayakan
 
+	result = []
+	list_dapat = {}
+	all_ipr = IprCheck.query.all()
+	for ipr in all_ipr:
+		if ipr.max_umur_pemohon is None:
+			ipr.max_umur_pemohon = ''
+		if ipr.min_umur_pemohon is None:
+			ipr.min_umur_pemohon = ''
+		if ipr.jantina_pemohon is None:
+			ipr.jantina_pemohon = ''
+		if ipr.status_pemohon is None:
+			ipr.status_pemohon = ''
+		if ipr.negeri_kelahiran_pemohon is None:
+			ipr.negeri_kelahiran_pemohon = ''
+		if ipr.mastautin_pemohon is None:
+			ipr.mastautin_pemohon = ''
+		if ipr.max_pendapatan_pemohon is None:
+			ipr.max_pendapatan_pemohon = ''
+		if ipr.min_pendapatan_pemohon is None:
+			ipr.min_pendapatan_pemohon = ''
+		if ipr.jantina_pasangan is None:
+			ipr.jantina_pasangan = ''
+		if ipr.max_umur_pasangan is None:
+			ipr.max_umur_pasangan = ''
+		if ipr.min_umur_pasangan is None:
+			ipr.min_umur_pasangan = ''
+		if ipr.max_gaji_pasangan is None:
+			ipr.max_gaji_pasangan = ''
+		if ipr.min_gaji_pasangan is None:
+			ipr.min_gaji_pasangan = ''
+		if ipr.bilangan_anak is None:
+			ipr.bilangan_anak = ''
+		if ipr.masih_belajar is None:
+			ipr.masih_belajar = ''
 
-	return jsonify({'message' : 'api'})
+		# all check
+		if gaji <= ipr.max_pendapatan_pemohon and gaji >= ipr.min_pendapatan_pemohon and tempat_lahir == 'Selangor':
+			list_dapat[ipr.kod_ipr] = "layak"
+		else:
+			list_dapat[ipr.kod_ipr] = "tidak"
+
+	# 2nd check by ipr
+	# letak column db pendapatan isi rumah
+	if list_dapat['sade'] == 'tidak':
+		if tempat_lahir == 'Selangor' or pendapatan_isi_rumah <= 4000:
+			list_dapat['sade'] = 'layak'
+			print('atoi')
+
+
+	# result.append(list_dapat)
+	# print(result)
+	# output = jsonify({'message' : result})
+	# print(output["message"])
+
+	return render_template('result.html', output=list_dapat)
+	# return render_template('result.html', output=json.dumps(list_dapat))
+	# return jsonify({'message' : result})
 
 @app.route('/')
 def main_page():
 
 	return render_template('home.html')
 
-@app.route('/result')
+@app.route('/result2')
 def result_page():
-
+	
 	return render_template('result.html')
 
 if __name__ == '__main__':
